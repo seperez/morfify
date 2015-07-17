@@ -185,12 +185,32 @@ gulp.task('fontDist', function() {
 });
 
 gulp.task('revisionDist',function(){
+    var unRevFiles = gulp.src(src.dist.root + '*');
+
     gulp.src(src.dist.root + '*')
         .pipe($.rev())
-        .pipe($.gzip())
+        // .pipe($.gzip())
         .pipe(gulp.dest(src.dist.root))
         .pipe($.rev.manifest())
         .pipe(gulp.dest(src.dist.root))
+    
+    unRevFiles.
+        pipe($.rimraf());
+});
+
+gulp.task("revisionReplace", function(){
+    setTimeout(function(){
+        var manifest = gulp.src(src.dist.manifest + "rev-manifest.json");
+
+        return gulp.src("index.html")
+            .pipe($.revReplace({
+                manifest: manifest,
+                modifyUnreved: function (filename) {
+                    return '/build/' + filename;
+                }
+            }))
+            .pipe(gulp.dest(src.dist.root));
+    },200);
 });
 
 gulp.task('cleanDist', function() {
@@ -212,9 +232,11 @@ gulp.task('build',function(){
 gulp.task('dist',function(){
     runSequence(
         'cleanDist',
-        ['jsDist', 'cssDist'],
-        ['fontDist', 'imageDist'],
-        'revisionDist'
+        // ['jsDist', 'cssDist'],
+        ['jsDist'],
+        // ['fontDist', 'imageDist'],
+        'revisionDist',
+        'revisionReplace'
     );
 });
 
@@ -234,4 +256,11 @@ gulp.task('watch', function() {
             'jsBuild'
         );
     });
+});
+
+gulp.task('deploy',function(){
+    return gulp.src('./dist/**/*')
+        .pipe($.ghPages({
+            message: 'Automatic gh-pages deploy'
+        }));
 });
