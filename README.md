@@ -39,6 +39,8 @@ This repository contains the Morfify project.
 
 **Gulp dist:** generates bundles for production. It includes minification, revision and gziping.
 
+**Gulp deploy:** push dist folder to gh-pages.
+
 
 ##Collaborators
 
