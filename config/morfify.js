@@ -3,16 +3,15 @@ var mobile,
 
 mobile = {
     'js': [
-        './src/models/test.model.js'
-        // './src/app.js',
+        './src/app.js',
 
-        // './build/tmpl/morfifyTmpl.js',
+        './build/tmpl/morfifyTmpl.js',
 
-        // './src/utils/handlebars-helper.js',
-        // './src/utils/utils.js',
-        // './src/utils/url.js',
+        './src/utils/handlebars-helper.js',
+        './src/utils/utils.js',
+        
 
-        // './src/morfify.module.js'
+        './src/morfify.module.js'
     ],
     'css': [],
     'tmpl': []

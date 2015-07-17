@@ -7,6 +7,7 @@ var path = require('path'),
     $ = require('gulp-load-plugins')(),
 
     src = {
+        'root':'./src/',
         'build':{
             'root': './build/',
             'styles': './build/',
@@ -65,7 +66,7 @@ gulp.task('tmplBuild', function() {
 });
 
 gulp.task('jsLinting', function() {
-    gulp.src('./backbone-app/**/*.js')
+    gulp.src(src.root + '**/*.js')
         .pipe($.jshint())
         .pipe($.jshint.reporter('jshint-stylish'))
 });

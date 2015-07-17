@@ -4,7 +4,7 @@ module.exports = {
         './node_modules/handlebars/dist/handlebars.js',
         './node_modules/underscore/underscore.js',
         './node_modules/backbone/backbone.js',
-        './node_modules/marionette/lib/backbone.marionette.js',
+        './node_modules/backbone.marionette/lib/backbone.marionette.js',
     ],
     'css': []
 };
