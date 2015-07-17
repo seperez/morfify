@@ -47,7 +47,7 @@ var path = require('path'),
 //Tasks for build
 
 gulp.task('tmplBuild', function() {
-    mkdirp(src.build.tmpl);
+    mkdirp.sync(src.build.tmpl);
 
     Object.keys(bundles.tmpl).forEach(function(bundle) {
         return gulp.src(bundles.tmpl[bundle])
@@ -104,17 +104,17 @@ gulp.task('cssBuild', function() {
 });
 
 gulp.task('imageBuild', function() {
-    mkdirp(src.build.images);
+    mkdirp.sync(src.build.images);
 
     return gulp.src([
-            'backbone-app/assets/*.png',
-            'backbone-app/assets/*.gif',
-            'backbone-app/assets/*.jpg'
+            src.build.images + '/*.png',
+            src.build.images + '/*.gif',
+            src.build.images + '/*.jpg'
         ])
-        // .pipe($.imagemin({
-        //     progressive: true,
-        //     interlaced: true
-        // }))
+        .pipe($.imagemin({
+            progressive: true,
+            interlaced: true
+        }))
         .pipe($.size({
             title: 'Images size:'
         }))
@@ -122,13 +122,13 @@ gulp.task('imageBuild', function() {
 });
 
 gulp.task('fontBuild', function() {
-    mkdirp(src.build.fonts);
+    mkdirp.sync(src.build.fonts);
 
     return gulp.src([
-        'backbone-app/assets/*.eot',
-        'backbone-app/assets/*.svg',
-        'backbone-app/assets/*.ttf',
-        'backbone-app/assets/*.woff'
+        src.build.fonts + '*.eot',
+        src.build.fonts + '*.svg',
+        src.build.fonts + '*.ttf',
+        src.build.fonts + '*.woff'
     ])
     .pipe(gulp.dest(src.build.fonts))
 });
@@ -171,14 +171,14 @@ gulp.task('cssDist', function() {
 });
 
 gulp.task('imageDist', function() {
-    mkdirp(src.dist.images);
+    mkdirp.sync(src.dist.images);
 
     return gulp.src(src.build.images)
     .pipe(gulp.dest(src.dist.images));
 });
 
 gulp.task('fontDist', function() {
-    mkdirp(src.dist.fonts);
+    mkdirp.sync(src.dist.fonts);
 
     return gulp.src(src.build.fonts)
     .pipe(gulp.dest(src.dist.fonts));
@@ -223,6 +223,7 @@ gulp.task('build',function(){
         'cleanBuild',
         'tmplBuild',
         ['fontBuild', 'imageBuild'],
+        ['imageBuild'],
         'cssBuild',
         'jsLinting',
         'jsBuild'
@@ -232,8 +233,7 @@ gulp.task('build',function(){
 gulp.task('dist',function(){
     runSequence(
         'cleanDist',
-        // ['jsDist', 'cssDist'],
-        ['jsDist'],
+        ['jsDist', 'cssDist'],
         // ['fontDist', 'imageDist'],
         'revisionDist',
         'revisionReplace'
